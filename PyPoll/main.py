@@ -1,53 +1,88 @@
+
 import os
 import csv
 
 
+runner = []
+votes_cast = 0
+vote_counts = []
+percentages = []
+
+MyPoll = os.path.join("election_data.csv")
+
+with open(MyPoll, newline="") as csvfile:
+    csvreader = csv.reader(csvfile, delimiter = ",")
+
+    first_row = next(csvreader)
+
+    
+    for row in csvreader:
+
+       
+        votes_cast = votes_cast + 1
+
+        
+        cand = row[2]
+
+       
+        if cand in runner:
+            candidate_index = runner.index(cand)
+            vote_counts[candidate_index] = vote_counts[candidate_index] + 1
+        else:
+            runner.append(cand)
+            vote_counts.append(1)
 
 
-Mybank = os.path.join("election_data.csv")
 
-with open(Mybank, newline="") as csvfile:
-	csvreader = csv.reader(csvfile, delimiter = ",")
+        index = 0
 
-	csv_header = next(csvreader)
-
-	
-	runner = [] #candidate
-	votes_cast = 0
-	votes_counted = []
-	winner = []
-	total_votes = 0
-	percentage = []
+        MostVotes = vote_counts[0]
+        
 
 
-	first_row = next(csvreader)
 
-	for row in csvreader:
-		votes_cast = votes_cast + 1
+    for count in range(len(runner)):
+        vote_percentage = vote_counts[count]/votes_cast*100
 
-		cand = row[2]
+        percentages.append(vote_percentage)
 
-
-	if cand in runner:
-		candidate_index = runner.index(cand)
-		votes_counted[candidate_index] = votes_counted[candidate_index] + 1
-	else:
-		runner.append(cand)
-		votes_counted.append(1)
+        if vote_counts[count] > MostVotes:
+            MostVotes = vote_counts[count]
+            print(max_votes)
+            index = count
 
 
-max_counted = votes_counted[0]
-max_index = 0
-#find percentage of vote for each candidate and the winner
+        winner = runner[index]
+
+print('\n')
+print("Election Results")
+print("---------------------------------")
+print('\n')
+print(f"Total Votes:          {votes_cast}")
+
 for count in range(len(runner)):
-	vote_percentage = votes_counted[count]/votes_cast*100
-	percentage.append(vote_percentage)
-	if votes_counted[count] > max_counted:
-		max_counted = votes_counted[count]
-		print(max_votes)
-		max_index = count
-		winner = runner[max_index]
+    print(f" {runner[count]} {percentages[count]} {vote_counts[count]}")
+print("---------------------------------")
+print(f"Winner:                 {winner}")
+print("---------------------------------")
 
 
-print(f"Total Votes: {votes_cast}")
-print(f"Winner: {winner}")
+
+
+
+sys.stdout = open("Poll_Result.txt", "w")
+print('\n')
+print("Election Results")
+print("---------------------------------")
+print('\n')
+print(f"Total Votes:          {votes_cast}")
+
+for count in range(len(runner)):
+    print(f" {runner[count]} {percentages[count]} {vote_counts[count]}")
+print("---------------------------------")
+print(f"Winner:                 {winner}")
+print("---------------------------------")
+
+
+
+
